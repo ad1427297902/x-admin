@@ -1,0 +1,87 @@
+# 端口号
+server:
+  port: 5210
+  # 虚拟路径
+  servlet:
+    context-path: /szw
+
+spring:
+  devtools:
+    restart:
+      enabled: true   # 开启热部署（更改文件后，自动重启）
+  mvc:
+    # 时间格式化
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss
+      date: yyyy-MM-dd
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/employee?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      # 初始连接数
+      initialSize: 5
+      # 最小连接池数量
+      minIdle: 10
+      # 最大连接池数量
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      maxEvictableIdleTimeMillis: 900000
+
+        #      #配置监控统计拦截的filters,stat:监控统计、log4j：日志记录、wall：防御sql注入
+        #      filters: stat,wall,log4j
+        #      maxPoolPreparedStatementPerConnectionSize: 20
+        #      useGlobalDataSourceStat: true
+      #      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      # 配置检测连接是否有效
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      webStatFilter:
+        enabled: true
+        exclusions: .js,.gif,.jpg,.png,.css,.ico,/druid/*
+        session-stat-enable: true
+        session-stat-max-count: 100
+      statViewServlet:
+        enabled: true
+        # 设置白名单，不填则允许所有访问
+        allow:
+        url-pattern: /druid/*
+        # 控制台管理用户名和密码
+        login-username: admin
+        login-password: 123456
+      filter:
+        stat:
+          enabled: true
+          # 慢SQL记录
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+        slf4j:
+          enabled: true
+          statement-create-after-log-enabled: false
+          statement-close-after-log-enabled: false
+          result-set-close-after-log-enabled: false
+          result-set-open-after-log-enabled: false
+#mybatis-plus 整合
+mybatis-plus:
+  #MyBatis 配置文件位置，如果您有单独的 MyBatis 配置，请将其路径配置到 configLocation 中
+  #config-location: classpath:mapper/*.xml
+  #MyBaits 别名包扫描路径，通过该属性可以给包中的类注册别名，注册后在 Mapper 对应的 XML 文件中可以直接使用类名，而不用使用全限定的类名（即 XML 中调用的时候不用包含包名）。
+  type-aliases-package: com.szw.springboot02.pojo
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  # 开启驼峰uName自动映射到u_name
+  configuration:
+    map-underscore-to-camel-case: true
